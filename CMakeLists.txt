@@ -53,6 +53,16 @@ include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/lib
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/amx
+	${CMAKE_CURRENT_SOURCE_DIR}/lib/bullet3/src
+)
+
+set (BUILD_CPU_DEMOS OFF CACHE BOOL "Build original Bullet CPU examples")
+set (BUILD_BULLET2_DEMOS OFF CACHE BOOL "Set when you want to build the Bullet 2 demos")
+set (BUILD_EXTRAS OFF CACHE BOOL "Set when you want to build the extras")
+set (BUILD_OPENGL3_DEMOS OFF CACHE BOOL "Set when you want to build the OpenGL3+ demos")
+set (BUILD_UNIT_TESTS OFF CACHE BOOL "Build Unit Tests")
+add_subdirectory (
+	${CMAKE_CURRENT_SOURCE_DIR}/lib/bullet3
 )
 
 set (SUBHOOK_STATIC true)
@@ -69,11 +79,17 @@ file (GLOB FCNPC_SRC
 )
 source_group("" FILES ${FCNPC_SRC})
 
-file (GLOB VENDOR_SRC
+file (GLOB MAPANDREAS_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/MapAndreas/*.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/MapAndreas/*.h
 )
-source_group("${VENDOR_GROUP}MapAndreas" FILES ${VENDOR_SRC})
+source_group("${VENDOR_GROUP}MapAndreas" FILES ${MAPANDREAS_SRC})
+
+file (GLOB COLANDREAS_SRC
+	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/ColAndreas/*.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/ColAndreas/*.h
+)
+source_group("${VENDOR_GROUP}ColAndreas" FILES ${COLANDREAS_SRC})
 
 file (GLOB SDK_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/*.cpp
@@ -97,7 +113,8 @@ source_group("${LIBRARY_GROUP}RakNet" FILES ${RAKNET_SRC})
 
 
 add_library (${PROJECT_NAME} SHARED ${FCNPC_SRC}
-                                    ${VENDOR_SRC}
+                                    ${MAPANDREAS_SRC}
+                                    ${COLANDREAS_SRC}
                                     ${SDK_SRC}
                                     ${STRLCPY_SRC}
                                     ${RAKNET_SRC}
