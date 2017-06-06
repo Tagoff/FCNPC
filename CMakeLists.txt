@@ -12,14 +12,22 @@ add_definitions (-DPLUGIN_VERSION="${PLUGIN_VERSION}" -DINCLUDE_VERSION=${INCLUD
 
 set (CMAKE_SHARED_LIBRARY_PREFIX "")
 
+set (LIBRARY_GROUP "lib\\")
+set (VENDOR_GROUP "vendor\\")
+
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_definitions (-DWIN32 -D_WIN32 -D__STDC__ -DSYSTEM_NAME="Windows")
 
-	set (FCNPC_SRC
+	file (GLOB FCNPC_SRC
 		${CMAKE_CURRENT_SOURCE_DIR}/src/Exports.def
+	)
+
+	file (GLOB SNPRINTF_SRC
 		${CMAKE_CURRENT_SOURCE_DIR}/lib/snprintf/*.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/lib/snprintf/*.h
 	)
+	set (PLATFORM_SRC ${SNPRINTF_SRC})
+	source_group("${LIBRARY_GROUP}snprintf" FILES ${SNPRINTF_SRC})
 
 	set (CMAKE_C_FLAGS "/Zp1 /W4")
 	set (CMAKE_CXX_FLAGS "/Zp1 /W4 /EHsc")
@@ -27,10 +35,12 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	add_definitions (-DLINUX -DSYSTEM_NAME="GNU/Linux")
 
-	set (FCNPC_SRC
+	file (GLOB FOPEN_S_SRC
 		${CMAKE_CURRENT_SOURCE_DIR}/lib/fopen_s/*.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/lib/fopen_s/*.h
 	)
+	set (PLATFORM_SRC ${FOPEN_S_SRC})
+	source_group("${LIBRARY_GROUP}fopen_s" FILES ${FOPEN_S_SRC})
 
 	set (FLAGS "-m32 -fPIC -O2 -fno-stack-protector -fpack-struct=1 -Wall -Wno-attributes -Wno-strict-aliasing -Wno-sequence-point")
 	set (CMAKE_C_FLAGS ${FLAGS})
@@ -40,6 +50,7 @@ endif ()
 
 include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/src
+	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor
 	${CMAKE_CURRENT_SOURCE_DIR}/lib
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/amx
 )
@@ -55,19 +66,42 @@ file (GLOB FCNPC_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
+)
+source_group("" FILES ${FCNPC_SRC})
+
+file (GLOB VENDOR_SRC
+	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/MapAndreas/*.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/MapAndreas/*.h
+)
+source_group("${VENDOR_GROUP}MapAndreas" FILES ${VENDOR_SRC})
+
+file (GLOB SDK_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/*.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/*.h
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/amx/*.c
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/sdk/amx/*.h
+)
+source_group("${LIBRARY_GROUP}SDK" FILES ${SDK_SRC})
+
+file (GLOB STRLCPY_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/strlcpy/*.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/strlcpy/*.h
+)
+source_group("${LIBRARY_GROUP}strlcpy" FILES ${STRLCPY_SRC})
+
+file (GLOB RAKNET_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/raknet/*.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/lib/raknet/*.h
-	${CMAKE_CURRENT_SOURCE_DIR}/lib/mapandreas/*.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/lib/mapandreas/*.h
 )
+source_group("${LIBRARY_GROUP}RakNet" FILES ${RAKNET_SRC})
 
-add_library (${PROJECT_NAME} SHARED ${FCNPC_SRC})
+
+add_library (${PROJECT_NAME} SHARED ${FCNPC_SRC}
+                                    ${VENDOR_SRC}
+                                    ${SDK_SRC}
+                                    ${STRLCPY_SRC}
+                                    ${RAKNET_SRC}
+                                    ${PLATFORM_SRC})
 
 target_link_libraries (${PROJECT_NAME} subhook)
 configure_file(src/FCNPC.inc.in ${CMAKE_CURRENT_SOURCE_DIR}/sampsvr_files/FCNPC.inc)
