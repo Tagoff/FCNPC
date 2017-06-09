@@ -3,7 +3,7 @@
 
 #include <btBulletDynamicsCommon.h>
 #include "ColObject.h"
-#include "ColAndreas.h"
+#include "Main.hpp"
 
 const btScalar DEG_TO_RAD = btScalar(0.0174532925);
 const btScalar RADIAN_TO_DEG = btScalar(57.29577951);
@@ -21,6 +21,10 @@ struct ContactCollisionSensor : public btCollisionWorld::ContactResultCallback /
 		return 0;
 	}
 };
+
+class RemovedBuildingManager;
+class ObjectManager;
+class MapWaterMesh;
 
 class ColAndreasWorld
 {

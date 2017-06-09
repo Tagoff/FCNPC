@@ -1,7 +1,7 @@
 #ifndef _INCL_NATIVES
 #define _INCL_NATIVES
 
-#include "ColAndreas.h"
+#include "Main.hpp"
 
 class ColAndreasNatives
 {

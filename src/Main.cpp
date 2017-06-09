@@ -24,6 +24,12 @@ RakServer    *pRakServer = NULL;
 char         szSampClient[64];
 char         szSampVersion[64];
 
+// ColAndreas stuff
+bool colInit = false;
+bool colDataLoaded = false;
+cell nullAddress = NULL;
+ColAndreasWorld* collisionWorld;
+
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 {
 	return SUPPORTS_VERSION | SUPPORTS_AMX_NATIVES | SUPPORTS_PROCESS_TICK;
@@ -81,6 +87,30 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData)
 		logprintf("Failed. (Cant create server instance)");
 		return false;
 	}
+
+	// ColAndreas
+	logprintf("");
+	logprintf("-------------------------------------------------");
+	logprintf("   ColAndreas" CA_VERSION);
+	logprintf("");
+	logprintf("   Created By:");
+	logprintf("     [uL]Chris42O");
+	logprintf("     [uL]Slice");
+	logprintf("     [uL]Pottus");
+	logprintf("-------------------------------------------------");
+	logprintf("");
+	logprintf("Loading...");
+
+	collisionWorld = new ColAndreasWorld();
+
+	if (collisionWorld->loadCollisionData()) {
+		logprintf("Loaded collision data.");
+		colDataLoaded = true;
+	} else {
+		logprintf("No collision data found.");
+	}
+
+	logprintf("ColAndreas " CA_VERSION " Loaded.");
 	return true;
 }
 
@@ -285,6 +315,30 @@ AMX_NATIVE_INFO PluginNatives[ ] = {
 	{ "MapAndreas_SetZ_For2DCoord", CMapAndreasNatives::SetZ_For2DCoord },
 	{ "MapAndreas_SaveCurrentHMap", CMapAndreasNatives::SaveCurrentHMap },
 	{ "MapAndreas_GetAddress", CMapAndreasNatives::GetAddress },
+
+	// ColAndreas
+	{ "CA_Init", ColAndreasNatives::CA_Init },
+	{ "CA_RayCastLine", ColAndreasNatives::CA_RayCastLine },
+	{ "CA_RayCastLineExtraID", ColAndreasNatives::CA_RayCastLineExtraID },
+	{ "CA_RayCastLineID", ColAndreasNatives::CA_RayCastLineID },
+	{ "CA_RayCastLineAngle", ColAndreasNatives::CA_RayCastLineAngle },
+	{ "CA_RayCastMultiLine", ColAndreasNatives::CA_RayCastMultiLine },
+	{ "CA_RayCastReflectionVector", ColAndreasNatives::CA_RayCastReflectionVector },
+	{ "CA_RayCastLineNormal", ColAndreasNatives::CA_RayCastLineNormal },
+	{ "CA_ContactTest", ColAndreasNatives::CA_ContactTest },
+	{ "CA_CreateObject", ColAndreasNatives::CA_CreateObject },
+	{ "CA_DestroyObject", ColAndreasNatives::CA_DestroyObject },
+	{ "CA_EulerToQuat", ColAndreasNatives::CA_EulerToQuat },
+	{ "CA_QuatToEuler", ColAndreasNatives::CA_QuatToEuler },
+	{ "CA_RemoveBuilding", ColAndreasNatives::CA_RemoveBuilding },
+	{ "CA_SetObjectPos", ColAndreasNatives::CA_SetObjectPos },
+	{ "CA_SetObjectRot", ColAndreasNatives::CA_SetObjectRot },
+	{ "CA_GetModelBoundingSphere", ColAndreasNatives::CA_GetModelBoundingSphere },
+	{ "CA_GetModelBoundingBox", ColAndreasNatives::CA_GetModelBoundingBox },
+	{ "CA_SetObjectExtraID", ColAndreasNatives::CA_SetObjectExtraID },
+	{ "CA_GetObjectExtraID", ColAndreasNatives::CA_GetObjectExtraID },
+	{ "CA_RayCastLineEx", ColAndreasNatives::CA_RayCastLineEx },
+	{ "CA_RayCastLineAngleEx", ColAndreasNatives::CA_RayCastLineAngleEx },
 
 	{0, 0}
 };

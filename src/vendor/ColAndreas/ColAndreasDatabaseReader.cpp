@@ -1,5 +1,5 @@
 #include "ColAndreasDatabaseReader.h"
-#include "ColAndreas.h"
+#include "Main.hpp"
 
 CollisionModelstructure* CollisionModels;
 ItemPlacementstructure* ModelPlacements;

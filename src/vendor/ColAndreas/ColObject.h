@@ -3,7 +3,7 @@
 
 #include <btBulletDynamicsCommon.h>
 #include "ColAndreasDatabaseReader.h"
-#include "ColAndreas.h"
+#include "Main.hpp"
 #include "LodArray.h"
 
 #define MAX_MAP_OBJECTS 50000

@@ -7,7 +7,8 @@
 //
 //----------------------------------------------------------
 
-#pragma once
+#ifndef MAPANDREAS_NATIVES_H
+#define MAPANDREAS_NATIVES_H
 
 class CMapAndreasNatives
 {
@@ -20,3 +21,5 @@ public:
 	static cell AMX_NATIVE_CALL SaveCurrentHMap(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL GetAddress(AMX *amx, cell *params);
 };
+
+#endif
