@@ -272,10 +272,11 @@ void CFunctions::PlayerShoot(WORD wPlayerId, WORD wHitId, BYTE byteHitType, BYTE
 		if (bIsHit && bulletSyncData.byteHitType == BULLET_HIT_TYPE_PLAYER && pServer->GetPlayerManager()->IsNpcConnected(bulletSyncData.wHitID)) {
 			CPlayerData *pHitPlayerData = pServer->GetPlayerManager()->GetAt(bulletSyncData.wHitID);
 
-			if (pHitPlayerData && !pHitPlayerData->IsInvulnerable()) {
+			if (pHitPlayerData && !pHitPlayerData->IsInvulnerable() && pHitPlayerData->GetState() != PLAYER_STATE_WASTED) {
 				SWeaponInfo sWeaponInfo = CWeaponInfo::GetDefaultInfo(byteWeaponId);
 
 				pHitPlayerData->ProcessDamage(wPlayerId, sWeaponInfo.fDamage, byteWeaponId, BODY_PART_TORSO);
+				CCallbackManager::OnGiveDamage(wPlayerId, bulletSyncData.wHitID, byteWeaponId, BODY_PART_TORSO, sWeaponInfo.fDamage);
 			}
 		}
 

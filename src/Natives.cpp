@@ -21,12 +21,6 @@ cell AMX_NATIVE_CALL CNatives::FCNPC_Create(AMX *amx, cell *params)
 	char *szName;
 	amx_StrParam(amx, params[1], szName);
 
-	// Make sure the length is valid
-	int iLength = strlen(szName);
-	if (iLength == 0 || iLength > MAX_PLAYER_NAME) {
-		return INVALID_PLAYER_ID;
-	}
-
 	return pServer->GetPlayerManager()->AddPlayer(szName);
 }
 
@@ -2896,6 +2890,27 @@ cell AMX_NATIVE_CALL CNatives::FCNPC_SetUpdateRate(AMX *amx, cell *params)
 
 	// Set the update rate
 	return pServer->SetUpdateRate(iRate);
+}
+
+cell AMX_NATIVE_CALL CNatives::FCNPC_GetUpdateRate(AMX *amx, cell *params)
+{
+	return pServer->GetUpdateRate();
+}
+
+cell AMX_NATIVE_CALL CNatives::FCNPC_SetTickRate(AMX *amx, cell *params)
+{
+	CHECK_PARAMS(1, "FCNPC_SetUpdateRate");
+
+	// Get the params
+	int iRate = static_cast<int>(params[1]);
+
+	// Set the tick rate
+	return pServer->SetTickRate(iRate);
+}
+
+cell AMX_NATIVE_CALL CNatives::FCNPC_GetTickRate(AMX *amx, cell *params)
+{
+	return pServer->GetTickRate();
 }
 
 cell AMX_NATIVE_CALL CNatives::FCNPC_OpenNode(AMX *amx, cell *params)

@@ -16,7 +16,7 @@ extern CNetGame *pNetGame;
 CServer::CServer(eSAMPVersion version)
 {
 	m_iTicks = 0;
-	m_iTickRate = 5;
+	m_iTickRate = DEFAULT_TICK_RATE;
 
 	m_Version = version;
 	// Reset instances
@@ -102,11 +102,11 @@ BYTE CServer::Initialize(AMX *pAMX)
 
 	// Check the maxnpc from the config
 	if (CFunctions::GetMaxNPC() == 0) {
-		logprintf("Warning: the maxnpc limit is 0 (you will not be able to create NPCs unless you change it)");
+		logprintf("[FCNPC] Warning: Unable to create NPCs. The maxnpc limit in server.cfg is 0.");
 	}
 	// Check the maxnpc and maxplayers in the config
 	else if (CFunctions::GetMaxPlayers() < CFunctions::GetMaxNPC()) {
-		logprintf("Warning: the maxplayers limit is less than maxnpc (possible crash)");
+		logprintf("[FCNPC] Warning: Crash possible. The maxplayers limit in server.cfg is less than the maxnpc limit.");
 	}
 
 	return ERROR_NO;
@@ -145,6 +145,15 @@ CMovePath *CServer::GetMovePath()
 	return m_pMovePath;
 }
 
+bool CServer::IsValidNickName(char *szName)
+{
+	int iLength = strlen(szName);
+	if (iLength < 1 || iLength > MAX_PLAYER_NAME) {
+		return false;
+	}
+	return true;
+}
+
 bool CServer::DoesNameExist(char *szName)
 {
 	// Loop through all the players
@@ -160,6 +169,20 @@ bool CServer::DoesNameExist(char *szName)
 		}
 	}
 	return false;
+}
+
+bool CServer::SetTickRate(int iRate)
+{
+	if (iRate < 0) {
+		return false;
+	}
+	m_iTickRate = iRate;
+	return true;
+}
+
+int CServer::GetTickRate()
+{
+	return m_iTickRate;
 }
 
 bool CServer::SetUpdateRate(DWORD dwRate)

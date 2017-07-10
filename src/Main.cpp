@@ -126,6 +126,9 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload( )
 // Natives table
 AMX_NATIVE_INFO PluginNatives[ ] = {
 	{"FCNPC_SetUpdateRate", CNatives::FCNPC_SetUpdateRate},
+	{"FCNPC_GetUpdateRate", CNatives::FCNPC_GetUpdateRate},
+	{"FCNPC_SetTickRate", CNatives::FCNPC_SetTickRate},
+	{"FCNPC_GetTickRate", CNatives::FCNPC_GetTickRate},
 	{"FCNPC_InitMapAndreas", CNatives::FCNPC_InitMapAndreas},
 	{"FCNPC_TriggerWeaponShot", CNatives::FCNPC_TriggerWeaponShot},
 
@@ -352,7 +355,7 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *pAMX)
 			// Get the error
 			char szError[64];
 			CUtils::GetPluginError(byteError, szError, sizeof(szError));
-			logprintf("FCNPC Init Failed. (Error: %s)", szError);
+			logprintf("[FCNPC] Error: Script initialization failed. %s.", szError);
 			exit(0);
 		}
 		// Initialize the starting tick

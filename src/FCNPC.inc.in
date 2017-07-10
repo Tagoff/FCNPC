@@ -71,6 +71,9 @@ forward FCNPC_OnChangeHeightPos(npcid, Float:new_z, Float:old_z); // disabled by
 
 // Natives
 native FCNPC_SetUpdateRate(rate);
+native FCNPC_GetUpdateRate();
+native FCNPC_SetTickRate(rate);
+native FCNPC_GetTickRate();
 native FCNPC_InitMapAndreas(address);
 
 native FCNPC_Create(name[]);
@@ -252,6 +255,108 @@ native FCNPC_IsMapAndreasUsed(npcid);
 native FCNPC_SetMinHeightPosCall(npcid, Float:height);
 native Float:FCNPC_GetMinHeightPosCall(npcid);
 
+// ALS for some callbacks
+public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
+{
+	#if defined FCNPC_OnPlayerGiveDamage
+		return FCNPC_OnPlayerGiveDamage(playerid, damagedid, amount, weaponid, bodypart);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerGiveDamage
+	#undef OnPlayerGiveDamage
+#else
+	#define _ALS_OnPlayerGiveDamage
+#endif
+
+#define OnPlayerGiveDamage FCNPC_OnPlayerGiveDamage
+#if defined FCNPC_OnPlayerGiveDamage
+	forward FCNPC_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart);
+#endif
+
+
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
+{
+	#if defined FCNPC_OnPlayerTakeDamage
+		return FCNPC_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid, bodypart);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerTakeDamage
+	#undef OnPlayerTakeDamage
+#else
+	#define _ALS_OnPlayerTakeDamage
+#endif
+
+#define OnPlayerTakeDamage FCNPC_OnPlayerTakeDamage
+#if defined FCNPC_OnPlayerTakeDamage
+	forward FCNPC_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
+#endif
+
+
+public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+{
+	#if defined FCNPC_OnPlayerWeaponShot
+		return FCNPC_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerWeaponShot
+	#undef OnPlayerWeaponShot
+#else
+	#define _ALS_OnPlayerWeaponShot
+#endif
+
+#define OnPlayerWeaponShot FCNPC_OnPlayerWeaponShot
+#if defined FCNPC_OnPlayerWeaponShot
+	forward FCNPC_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
+#endif
+
+
+public OnPlayerStreamIn(playerid, forplayerid)
+{
+	#if defined FCNPC_OnPlayerStreamIn
+		return FCNPC_OnPlayerStreamIn(playerid, forplayerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerStreamIn
+	#undef OnPlayerStreamIn
+#else
+	#define _ALS_OnPlayerStreamIn
+#endif
+
+#define OnPlayerStreamIn FCNPC_OnPlayerStreamIn
+#if defined FCNPC_OnPlayerStreamIn
+	forward FCNPC_OnPlayerStreamIn(playerid, forplayerid);
+#endif
+
+
+public OnPlayerStreamOut(playerid, forplayerid)
+{
+	
+	#if defined FCNPC_OnPlayerStreamOut
+		return FCNPC_OnPlayerStreamOut(playerid, forplayerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerStreamOut
+	#undef OnPlayerStreamOut
+#else
+	#define _ALS_OnPlayerStreamOut
+#endif
+
+#define OnPlayerStreamOut FCNPC_OnPlayerStreamOut
+#if defined FCNPC_OnPlayerStreamOut
+	forward FCNPC_OnPlayerStreamOut(playerid, forplayerid);
+#endif
+
+
 // Update checker
 #if !defined HTTP
 	#tryinclude <a_http>
@@ -261,7 +366,7 @@ native Float:FCNPC_GetMinHeightPosCall(npcid);
 	#tryinclude "a_http"
 #endif
 
-#if defined HTTP
+#if defined HTTP && !defined FCNPC_DISABLE_VERSION_CHECK
 	#if defined FILTERSCRIPT
 		public OnFilterScriptInit()
 		{
@@ -316,15 +421,19 @@ native Float:FCNPC_GetMinHeightPosCall(npcid);
 	{
 		if (index == 0 && response_code == 200) {
 			new length = strlen(data);
-			if (length == 0) {
+			if (length == 0 || length > 10) {
 				return;
 			}
 
 			new version[16];
 			strmid(version, data, 1, length);
 
+			if (!('0' <= version[0] <= '9')) {
+				return;
+			}
+
 			if (strcmp(version, FCNPC_PLUGIN_VERSION) != 0) {
-				printf("\n** Please update your FCNPC plugin to %s from here: https://github.com/ziggi/FCNPC/releases.\n", data);
+				printf("\n** Please update your FCNPC plugin to %s from here: https://github.com/ziggi/FCNPC/releases.\n", version);
 			}
 		}
 	}

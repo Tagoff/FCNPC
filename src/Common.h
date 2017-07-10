@@ -20,6 +20,7 @@ extern logprintf_t          logprintf;
 #define MAX_DAMAGE_DISTANCE             200.0f
 #define MAX_DISTANCE_TO_ENTER_VEHICLE   30.0f
 #define DEFAULT_UPDATE_RATE             50
+#define DEFAULT_TICK_RATE               5
 
 // General definitions
 #define MAX_NODES           64
@@ -30,7 +31,7 @@ extern logprintf_t          logprintf;
 #ifndef CHECK_PARAMS
 #define CHECK_PARAMS(m,n) \
 	if (params[0] != (m * 4)) { \
-		logprintf("[FCNPC] Error: Incorrect parameter count for \"%s\", %d != %d\n", n, m, (static_cast<int>(params[0])) / 4); \
+		logprintf("[FCNPC] Error: Incorrect parameter count for function '%s'. %d != %d.", n, m, (static_cast<int>(params[0])) / 4); \
 		return 0; \
 	}
 #endif

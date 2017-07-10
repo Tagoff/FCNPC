@@ -34,16 +34,16 @@ public:
 	BYTE Initialize(AMX *pAMX);
 	void Process();
 
-	void SetTickRate(int rate) { m_iTickRate = rate; }
-	int GetTickRate(void) { return m_iTickRate; }
-
 	CPlayerManager *GetPlayerManager();
 	CNodeManager *GetNodeManager();
 	CRecordManager *GetRecordManager();
 	CMovePath *GetMovePath();
 
+	bool IsValidNickName(char *szName);
 	bool DoesNameExist(char *szName);
 
+	bool SetTickRate(int iRate);
+	int GetTickRate();
 	bool SetUpdateRate(DWORD dwRate);
 	DWORD GetUpdateRate();
 
