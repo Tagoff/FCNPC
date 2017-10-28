@@ -46,6 +46,7 @@ public:
 	void ResetSyncMoving(int iState);
 	void UpdateAim();
 	bool IsSpawned();
+	void SetSpawnedStatus(bool status);
 	bool IsStreamedIn(WORD wForPlayerId);
 	void ShowForPlayer(WORD wPlayerId);
 	void ShowForStreamedPlayers();
@@ -137,6 +138,7 @@ public:
 	bool IsMoving();
 	bool IsMovingAtPlayer(WORD wPlayerId);
 	bool IsMovingByMovePath(int iMovePath);
+	int GetMovingType();
 
 	void ToggleReloading(bool bToggle);
 	void ToggleInfiniteAmmo(bool bToggle);
@@ -209,6 +211,8 @@ public:
 	bool IsMapAndreasUsed();
 	void SetMinHeightPosCall(float fHeight);
 	float GetMinHeightPosCall();
+
+	CPlayer *GetInterface();
 
 private:
 	WORD m_wPlayerId;

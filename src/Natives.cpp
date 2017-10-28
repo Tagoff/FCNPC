@@ -1935,6 +1935,10 @@ cell AMX_NATIVE_CALL CNatives::FCNPC_AimAt(AMX *amx, cell *params)
 		return 0;
 	}
 
+	if (pPlayerData->IsMoving() && pPlayerData->GetMovingType() == MOVE_TYPE_SPRINT) {
+		return 0;
+	}
+
 	int iWeaponType = pPlayerData->GetWeaponType(pPlayerData->GetWeapon());
 	switch (iWeaponType) {
 		case WEAPON_TYPE_MELEE:
@@ -2878,6 +2882,20 @@ cell AMX_NATIVE_CALL CNatives::FCNPC_GetPlayingPlaybackPath(AMX *amx, cell *para
 	char *szPath = new char[size];
 	pPlayerData->GetPlayingPlaybackPath(szPath, size);
 	amx_SetString(pAddress, szPath, 0, 0, size);
+	return 1;
+}
+
+cell AMX_NATIVE_CALL CNatives::FCNPC_GetPluginVersion(AMX *amx, cell *params)
+{
+	cell *pAddress = NULL;
+
+	// Get the params
+	amx_GetAddr(amx, params[1], &pAddress);
+	size_t size = static_cast<size_t>(params[2]);
+
+	// Write version to the string
+	char *szPath = new char[size];
+	amx_SetString(pAddress, PLUGIN_VERSION, 0, 0, size);
 	return 1;
 }
 

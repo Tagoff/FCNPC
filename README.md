@@ -50,21 +50,21 @@ make
 
 # Definitions
 ```Pawn
-#define MOVE_TYPE_AUTO      (-1)
-#define MOVE_TYPE_WALK      (0)
-#define MOVE_TYPE_RUN       (1)
-#define MOVE_TYPE_SPRINT    (2)
-#define MOVE_TYPE_DRIVE     (3)
+#define FCNPC_MOVE_TYPE_AUTO      (-1)
+#define FCNPC_MOVE_TYPE_WALK      (0)
+#define FCNPC_MOVE_TYPE_RUN       (1)
+#define FCNPC_MOVE_TYPE_SPRINT    (2)
+#define FCNPC_MOVE_TYPE_DRIVE     (3)
 
-#define MOVE_SPEED_AUTO     (-1.0)
-#define MOVE_SPEED_WALK     (0.1552086)
-#define MOVE_SPEED_RUN      (0.56444)
-#define MOVE_SPEED_SPRINT   (0.926784)
+#define FCNPC_MOVE_SPEED_AUTO     (-1.0)
+#define FCNPC_MOVE_SPEED_WALK     (0.1552086)
+#define FCNPC_MOVE_SPEED_RUN      (0.56444)
+#define FCNPC_MOVE_SPEED_SPRINT   (0.926784)
 
-#define MAX_NODES           (64)
+#define FCNPC_MAX_NODES           (64)
 
-#define INVALID_MOVEPATH_ID (-1)
-#define INVALID_RECORD_ID   (-1)
+#define FCNPC_INVALID_MOVEPATH_ID (-1)
+#define FCNPC_INVALID_RECORD_ID   (-1)
 ```
 
 # Callbacks
@@ -104,6 +104,7 @@ forward FCNPC_OnChangeHeightPos(npcid, Float:new_z, Float:old_z); // disabled by
 
 # Natives
 ```Pawn
+native FCNPC_GetPluginVersion(version[], const size = sizeof(version));
 native FCNPC_SetUpdateRate(rate);
 native FCNPC_GetUpdateRate();
 native FCNPC_SetTickRate(rate);
