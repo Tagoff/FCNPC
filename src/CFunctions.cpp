@@ -125,7 +125,7 @@ WORD CFunctions::NewPlayer(char *szName)
 
 	pfn__ClientJoin_RPC(&pNPCParams);
 
-	reinterpret_cast<CSAMPRakPeer*>(pRakServer)->SetDisonnectedPlayer(wPlayerId);
+	//reinterpret_cast<CSAMPRakPeer*>(pRakServer)->SetDisonnectedPlayer(wPlayerId);
 
 	// Return the player id
 	return wPlayerId;
@@ -218,6 +218,7 @@ void CFunctions::PlayerShoot(WORD wPlayerId, WORD wHitId, BYTE byteHitType, BYTE
 			if (bIsPlayerOnRay && bIsPlayerInDamageRange) {
 				bulletSyncData.byteHitType = BULLET_HIT_TYPE_PLAYER;
 				bulletSyncData.wHitID = i;
+				bulletSyncData.vecHitTarget = CMath::GetNearestPointToRay(vecOrigin, vecPoint, pPlayer->vecPosition);
 				break;
 			}
 		}

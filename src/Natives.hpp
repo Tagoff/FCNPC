@@ -21,6 +21,8 @@ public:
 	static cell AMX_NATIVE_CALL FCNPC_GetTickRate(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_InitMapAndreas(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_TriggerWeaponShot(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_ToggleCrashLogCreation(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_GetCrashLogCreation(AMX *amx, cell *params);
 
 	static cell AMX_NATIVE_CALL FCNPC_Create(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_Destroy(AMX *amx, cell *params);
@@ -32,6 +34,7 @@ public:
 	static cell AMX_NATIVE_CALL FCNPC_IsValid(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_IsStreamedIn(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_IsStreamedForAnyone(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_GetValidArray(AMX *amx, cell *params);
 
 	static cell AMX_NATIVE_CALL FCNPC_SetPosition(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_GivePosition(AMX *amx, cell *params);
@@ -47,6 +50,8 @@ public:
 	static cell AMX_NATIVE_CALL FCNPC_SetVelocity(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_GiveVelocity(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_GetVelocity(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_SetSpeed(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_GetSpeed(AMX *amx, cell *params);
 
 	static cell AMX_NATIVE_CALL FCNPC_SetHealth(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_GiveHealth(AMX *amx, cell *params);
@@ -195,8 +200,8 @@ public:
 	static cell AMX_NATIVE_CALL FCNPC_GetNumberMovePoint(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_GoByMovePath(AMX *amx, cell *params);
 
-	static cell AMX_NATIVE_CALL FCNPC_ToggleMapAndreasUsage(AMX *amx, cell *params);
-	static cell AMX_NATIVE_CALL FCNPC_IsMapAndreasUsed(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_SetMoveMode(AMX *amx, cell *params);
+	static cell AMX_NATIVE_CALL FCNPC_GetMoveMode(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_SetMinHeightPosCall(AMX *amx, cell *params);
 	static cell AMX_NATIVE_CALL FCNPC_GetMinHeightPosCall(AMX *amx, cell *params);
 };

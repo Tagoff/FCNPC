@@ -14,7 +14,7 @@ extern CServer *pServer;
 
 void CExceptionHandler::Install()
 {
-	// Set the exception handler callback
+	// disable the exception handler callback
 #if defined(WIN32)
 	SetUnhandledExceptionFilter(ExceptionHandlerCallback);
 #elif defined(LINUX)
@@ -27,6 +27,21 @@ void CExceptionHandler::Install()
 		fprintf(stderr, "Error setting signal handler for %d (%s)\n", SIGSEGV, strsignal(SIGSEGV));
 		exit(EXIT_FAILURE);
 	}
+#endif
+}
+
+void CExceptionHandler::UnInstall()
+{
+	// Set the exception handler callback
+#if defined(WIN32)
+	SetUnhandledExceptionFilter(NULL);
+#elif defined(LINUX)
+	struct sigaction sigact;
+
+	sigact.sa_handler = SIG_DFL;
+	sigact.sa_flags = SA_RESTART | SA_SIGINFO;
+
+	sigaction(SIGSEGV, &sigact, (struct sigaction *)NULL);
 #endif
 }
 
