@@ -915,10 +915,10 @@ void CPlayerData::Process()
 				}
 			}
 		} else if (m_bMeleeAttack) {
-			if ((dwThisTick - m_dwShootTickCount) >= m_dwMeleeDelay) {
+			if ((m_dwUpdateTick - m_dwShootTickCount) >= m_dwMeleeDelay) {
 				SetKeys(m_pPlayer->wUDAnalog, m_pPlayer->wLRAnalog, m_pPlayer->dwKeys | (m_bMeleeFightstyle ? KEY_AIM | KEY_SECONDARY_ATTACK : KEY_FIRE));
-				m_dwShootTickCount = dwThisTick;
-			} else {
+				m_dwShootTickCount = m_dwUpdateTick;
+			} else if (m_dwUpdateTick > m_dwShootTickCount) {
 				SetKeys(m_pPlayer->wUDAnalog, m_pPlayer->wLRAnalog, m_pPlayer->dwKeys & ~(m_bMeleeFightstyle ? KEY_SECONDARY_ATTACK : KEY_FIRE));
 			}
 		}
@@ -962,7 +962,7 @@ void CPlayerData::GetPosition(CVector *pvecPosition)
 
 void CPlayerData::UpdateHeightPos(CVector *pvecPosition)
 {
-	if (m_iMoveMode == MOVE_MODE_MAPANDREAS && pServer->IsMapAndreasInited() && pvecPosition->fZ >= 0.0f) {
+	if (m_iMoveMode == MOVE_MODE_MAPANDREAS && pServer->IsMapAndreasInited() && pvecPosition->fZ >= 0.0f && m_pPlayer->iInteriorId == 0) {
 		float fNewZ = pServer->GetMapAndreas()->FindZ_For2DCoord(pvecPosition->fX, pvecPosition->fY) + 0.5f;
 		if (m_fMinHeightPos < 0.0f) {
 			pvecPosition->fZ = fNewZ;
@@ -1515,7 +1515,7 @@ bool CPlayerData::GoTo(CVector vecPoint, int iType, int iMode, float fRadius, bo
 	// Get the moving type key and speed
 	WORD wUDKey = m_pPlayer->wUDAnalog;
 	WORD wLRKey = m_pPlayer->wLRAnalog;
-	DWORD dwMoveKey = m_pPlayer->dwKeys;
+	DWORD dwMoveKey = m_pPlayer->dwKeys & ~(KEY_WALK | KEY_SPRINT);
 
 	if (iType == MOVE_TYPE_AUTO || iType == MOVE_TYPE_WALK || iType == MOVE_TYPE_RUN || iType == MOVE_TYPE_SPRINT) {
 		wUDKey |= static_cast<WORD>(KEY_UP);
