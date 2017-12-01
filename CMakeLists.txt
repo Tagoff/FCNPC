@@ -33,6 +33,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	source_group("${LIBRARY_GROUP}snprintf" FILES ${SNPRINTF_SRC})
 
 	# flags
+	set (USE_MSVC_RUNTIME_LIBRARY_DLL true)
 	set (CMAKE_C_FLAGS "/Zp1 /W4 /MT")
 	set (CMAKE_CXX_FLAGS "/Zp1 /W4 /EHsc /MT")
 	set (CMAKE_SHARED_LINKER_FLAGS "/NOLOGO /MACHINE:X86")
@@ -154,13 +155,12 @@ add_library (${PROJECT_NAME} SHARED ${FCNPC_SRC}
 
 target_link_libraries (${PROJECT_NAME}
 	subhook
-	Bullet3Common
-	Bullet3Collision
-	Bullet3Dynamics
-	Bullet3Geometry
-	Bullet3OpenCL_clew
 	BulletInverseDynamics
 	BulletSoftBody
+	BulletCollision
+	BulletDynamics
+	LinearMath
+	Bullet3Common
 	LinearMath
 	)
 configure_file(src/FCNPC.inc.in ${CMAKE_CURRENT_SOURCE_DIR}/sampsvr_files/FCNPC.inc)
